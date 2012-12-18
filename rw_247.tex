@@ -43,7 +43,6 @@
 \section{Fast readers, slow writers}
 
 \begin{frame}
-\pause
 \begin{block}{Why bother?}
 \pause
 It happens - \textbf{URLAnnotator} aka \textbf{buildaclassifier}.
@@ -59,6 +58,9 @@ It happens - \textbf{URLAnnotator} aka \textbf{buildaclassifier}.
 
 \pause
 Readers would wait for 30 min ...
+
+\pause
+\textcolor{dgreen}{Lets do something about this!}
 
 \end{frame}
 
@@ -91,16 +93,109 @@ Clearly this matches RW schema.
 
 \end{frame}
 
+
+\begin{frame}
+\frametitle{Only two classifiers}
+
+\begin{itemize}
+ \item two slots - \textbf{T}rain, \textbf{C}classify
+ \item protect \textbf{T} with normal lock/mutex etc.
+ \item protect \textbf{C} with RW lock
+ \item each classify\_* goes to \textbf{C}
+ \item each train goes to \textbf{T}
+ \item when we gain lock, we execute command on classifier found in slot
+ \item after train, we don't release \textbf{T} lock, we are acquiring \textbf{C} lock and than do swap in slots
+\end{itemize}
+
+\pause
+\textcolor{JungleGreen}{Let see it in action}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Overall view}
+\begin{center}
+\includegraphics[scale=0.1]{overall.jpg} 
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Classify}
+\begin{center}
+\includegraphics[scale=0.1]{classify.jpg} 
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Train}
+\begin{center}
+\includegraphics[scale=0.1]{train1.jpg} 
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Train}
+\begin{center}
+\includegraphics[scale=0.1]{train2.jpg} 
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Train}
+\begin{center}
+\includegraphics[scale=0.1]{train3.jpg} 
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Train}
+\begin{center}
+\includegraphics[scale=0.1]{train4.jpg} 
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Overall view}
+\begin{center}
+\includegraphics[scale=0.1]{overall.jpg} 
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\begin{block}{Summary}
+\begin{itemize}
+ \item $+$ no long reads
+ \item $+$ no need to know how to construct classifier - they are given at initialization
+ \item $-$ doubles memory/resource requirements
+\end{itemize}
+\end{block}
+\end{frame}
+\section{Some notes}
+
+\begin{frame}
+\begin{itemize}
+ \item 24/7 matches \emph{decorator patter} schema
+ \item Python stdlib lacks synchronization of not related processes
+ \item Java stdlib implements RW synchronization only with locks
+\end{itemize}
+\end{frame}
+
 \begin{frame}
 \begin{center}
 \Huge{Q \& m A}
+
+\includegraphics[scale=0.1]{questions.jpg} 
+
 \end{center}
 
 \end{frame}
 
 \begin{frame}
 
-Next time: slow readers ...
+Next time: slooooow readers ...
 
 \begin{center}
 \includegraphics[scale=0.5]{slow_readers.jpg} 
