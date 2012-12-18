@@ -4,6 +4,24 @@
 \date{18-12-2012}
 \usetheme{Hannover}
 
+\AtBeginSection[] { 
+  \begin{frame}[plain] 
+    \tableofcontents[currentsection] 
+  \end{frame}
+  \addtocounter{framenumber}{-1} 
+}
+
+\definecolor{olive}{rgb}{0.3, 0.4, .1}
+\definecolor{fore}{RGB}{249,242,215}
+\definecolor{back}{RGB}{51,51,51}
+\definecolor{title}{RGB}{255,0,90}
+\definecolor{dgreen}{rgb}{0.,0.6,0.}
+\definecolor{gold}{rgb}{1.,0.84,0.}
+\definecolor{JungleGreen}{cmyk}{0.99,0,0.52,0}
+\definecolor{BlueGreen}{cmyk}{0.85,0,0.33,0}
+\definecolor{RawSienna}{cmyk}{0,0.72,1,0.45}
+\definecolor{Magenta}{cmyk}{0,1,0,0}
+
 \begin{document}
 \begin{frame}
 \titlepage
@@ -17,23 +35,67 @@
 \begin{frame}
 \begin{itemize}
  \item definition (library/data)
- \item fairness
+ \item fairness / starvation
 \end{itemize}
 \end{frame}
 
 
 \section{Fast readers, slow writers}
+
 \begin{frame}
-\begin{itemize}
- \item reading takes 15 sec, very often (10 per minute)
- \item writting takes 30 min, once an hour
-\end{itemize}
 \pause
 \begin{block}{Why bother?}
 \pause
 It happens - \textbf{URLAnnotator} aka \textbf{buildaclassifier}.
-Possibly also Troia.
 \end{block}
+
+\pause
+\begin{example}[]
+\begin{itemize}
+ \item reading takes 15 sec, very often (10 per minute)
+ \item writing takes 30 min, once an hour
+\end{itemize}
+\end{example}
+
+\pause
+Readers would wait for 30 min ...
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Lets work with classifier example}
+
+\begin{block}{Classifier operations}
+\begin{itemize}
+ \item $t$ - train
+ \item $c$ - classify\_*
+\end{itemize}
+\end{block}
+Clearly this matches RW schema.
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Simple solutions}
+
+\begin{itemize}
+ \item create new classifier for each train
+ \item do the training
+ \item swap newly trained one with \emph{classifying} classifier
+\end{itemize}
+
+\pause
+\textcolor{RawSienna}{Because we can do better - we won't go into details}
+
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\Huge{Q \& m A}
+\end{center}
+
 \end{frame}
 
 \begin{frame}
